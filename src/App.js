@@ -4,7 +4,36 @@ import "./App.css";
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState("");
 
+  const checkIfWalletIsConnected = async () => {
+    try {
+      const { ethereum } = window;
+
+      if (!ethereum) {
+        console.log("Make sure you have metamask!");
+        return;
+      }
+
+      //Check if we have access to the user's wallet
+
+      const accounts = await ethereum.request({ method: "eth_accounts" });
+
+      if (accounts.length !== 0) {
+        const account = accounts[0];
+        console.log("Found an authorized account:", account);
+        setCurrentAccount(account);
+      } else {
+        console.log("No authorized account found");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const wave = () => {};
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
 
   const connectWallet = async () => {
     try {

@@ -1,9 +1,30 @@
-import * as React from "react";
-import { ethers } from "ethers";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 
-export default function App() {
+const App = () => {
+  const [currentAccount, setCurrentAccount] = useState("");
+
   const wave = () => {};
+
+  const connectWallet = async () => {
+    try {
+      const { ethereum } = window;
+
+      if (!ethereum) {
+        alert("Get MetaMask!");
+        return;
+      }
+
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+
+      setCurrentAccount(accounts[0]);
+      console.log("Connected", accounts[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="mainContainer">
@@ -18,7 +39,17 @@ export default function App() {
         <button className="waveButton" onClick={wave}>
           Wave at Me
         </button>
+        {/*
+         * If there is no currentAccount render this button
+         */}
+        {!currentAccount && (
+          <button className="waveButton" onClick={connectWallet}>
+            Connect Wallet
+          </button>
+        )}
       </div>
     </div>
   );
-}
+};
+
+export default App;

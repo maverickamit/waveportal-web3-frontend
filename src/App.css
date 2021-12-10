@@ -30,5 +30,21 @@
   padding: 8px;
   border: 0;
   border-radius: 5px;
-  
+  background-color: blue;
+  color: white;
+}
+.disabledWaveButton {
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 8px;
+  border: 0;
+  border-radius: 5px;
+  cursor: not-allowed;
+}
+.messageInput {
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 8px;
+  border: 2;
+  border-radius: 5px;
 }

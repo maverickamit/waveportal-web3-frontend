@@ -4,7 +4,7 @@ import "./App.css";
 import abiFile from "./utils/myProjectContract.json";
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState("");
-  const contractAddress = "0xf4cB2471a66900b57FB8f4185E2414a79dfFd1cd";
+  const contractAddress = "0x629Dc02daafCc0d74548954e226BE19cef741A8c";
   const contractABI = abiFile.abi;
   const checkIfWalletIsConnected = async () => {
     try {

@@ -31,6 +31,7 @@ const App = () => {
         const account = accounts[0];
         console.log("Found an authorized account:", account);
         setCurrentAccount(account);
+        getAllWaves();
       } else {
         console.log("No authorized account found");
       }
@@ -121,6 +122,7 @@ const App = () => {
       });
 
       setCurrentAccount(accounts[0]);
+      getAllWaves();
       console.log("Connected", accounts[0]);
     } catch (error) {
       console.log(error);
@@ -129,10 +131,6 @@ const App = () => {
 
   useEffect(() => {
     checkIfWalletIsConnected();
-  }, []);
-
-  useEffect(() => {
-    getAllWaves();
   }, []);
 
   //Listen for emitter events

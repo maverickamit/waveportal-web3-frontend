@@ -65,7 +65,6 @@ const App = () => {
           let count = await wavePortalContract.getTotalWaves();
           console.log("Retrieved total wave count...", count.toNumber());
           setUserMessage(""); //clear the message input field
-          getAllWaves();
         } else {
           console.log("Ethereum object doesn't exist!");
         }
@@ -81,7 +80,6 @@ const App = () => {
   const getAllWaves = async () => {
     try {
       const { ethereum } = window;
-
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
@@ -93,6 +91,7 @@ const App = () => {
 
         let waves = await wavePortalContract.getAllWaves();
         let cleanedWaves = [];
+
         waves.map((wave) => {
           cleanedWaves.push({
             address: wave.waver,
@@ -132,10 +131,47 @@ const App = () => {
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
+
   useEffect(() => {
     getAllWaves();
   }, []);
 
+  //Listen for emitter events
+  useEffect(() => {
+    let wavePortalContract;
+
+    const onNewWave = (from, timestamp, message) => {
+      console.log("NewWave", from, timestamp, message);
+      setAllWaves((prevState) => [
+        ...prevState,
+        {
+          address: from,
+          timestamp: new Date(timestamp * 1000),
+          message: message,
+        },
+      ]);
+    };
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        wavePortalContract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+        wavePortalContract.on("NewWave", onNewWave);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return () => {
+      if (wavePortalContract) {
+        wavePortalContract.off("NewWave", onNewWave);
+      }
+    };
+  }, []);
   return (
     <div className="mainContainer">
       <div className="dataContainer">

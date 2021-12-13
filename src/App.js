@@ -69,7 +69,6 @@ const App = () => {
           console.log("Ethereum object doesn't exist!");
         }
       } catch (error) {
-        alert("Please connect wallet ");
         console.log(error);
       }
     } else {

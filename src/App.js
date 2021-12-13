@@ -7,7 +7,7 @@ const App = () => {
   const [userMessage, setUserMessage] = useState("");
   const [currentAccount, setCurrentAccount] = useState("");
 
-  const contractAddress = "0x629Dc02daafCc0d74548954e226BE19cef741A8c";
+  const contractAddress = "0x9CD4212e461d3b1A82c0684d47CdCfeaeb64cD6A";
   const contractABI = abiFile.abi;
 
   const handleMessage = (event) => {
@@ -54,7 +54,9 @@ const App = () => {
 
           //Execute the actual wave from the smart contract
 
-          const waveTxn = await wavePortalContract.wave(userMessage);
+          const waveTxn = await wavePortalContract.wave(userMessage, {
+            gasLimit: 300000,
+          });
           console.log("Mining...", waveTxn.hash);
 
           await waveTxn.wait();
@@ -129,6 +131,8 @@ const App = () => {
 
   useEffect(() => {
     checkIfWalletIsConnected();
+  }, []);
+  useEffect(() => {
     getAllWaves();
   }, []);
 
